@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TwitterSpammer</string>
+    <string name="launcherTransition">launcherTransition</string>
+    <string name="disclaimer">Welcome to Twitter Spammer. Use this to make your hashtag trending. We strongly deny use of this app tp spread hate or propaganda. All the tweets sent from this app will be posted under the twitter handle you used to access this app. Enjoy spamming :)</string>
+</resources>

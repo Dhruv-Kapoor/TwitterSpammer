@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.twitterspammer.activities.MainActivityViewModel" />
+
+        <variable
+            name="tweetCountAdapter"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="timeIntervalAdapter"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.MainActivity">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/twitter_logo"
+            android:transitionName="@string/launcherTransition"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/red" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@id/bottomText"
+            app:layout_constraintTop_toBottomOf="@+id/logo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disclaimer"
+                    android:textAlignment="center"
+                    android:textColor="?attr/textColorPrimary"
+                    android:textSize="?attr/textSizeXS" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/EditTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etHashTag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Add #"
+                            android:text="@={viewmodel.hashTag}"
+                            android:textColor="?attr/textColorPrimary"
+                            tools:text="#abcd" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnAddHashTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:onClick="@{listener}"
+                        android:text="Add" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:paddingHorizontal="16dp">
+
+                    <TextView
+                        android:id="@+id/tvHashTagCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewmodel.hashTagList.size())}"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/tvHashTagCount"
+                        android:text=" Added (Max 10)"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                    <TextView
+                        android:id="@+id/tvEditHasTagList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:drawablePadding="6dp"
+                        android:gravity="bottom"
+                        android:onClick="@{listener}"
+                        android:text="Edit"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall"
+                        app:drawableEndCompat="@drawable/edit"
+                        app:drawableTint="?attr/textColorSecondary" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/EditTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Add text"
+                            android:text="@={viewmodel.text}"
+                            android:textColor="?attr/textColorPrimary"
+                            tools:text="Hello" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnAddText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:onClick="@{listener}"
+                        android:text="Add" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:paddingHorizontal="16dp">
+
+                    <TextView
+                        android:id="@+id/tvTextCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewmodel.textList.size())}"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall"
+                        tools:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/tvTextCount"
+                        android:text=" Added (Max 10)"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                    <TextView
+                        android:id="@+id/tvEditTextList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:drawablePadding="6dp"
+                        android:gravity="bottom"
+                        android:onClick="@{listener}"
+                        android:text="Edit"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall"
+                        app:drawableEndCompat="@drawable/edit"
+                        app:drawableTint="?attr/textColorSecondary" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="14dp">
+
+                    <TextView
+                        android:id="@+id/t1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignBottom="@id/spinnerTweetCount"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center_vertical"
+                        android:text="Number of tweets: "
+                        android:textColor="?attr/textColorPrimary"
+                        android:textSize="?attr/textSizeNormal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/t1"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="24dp"
+                        android:text="Max tweet frequency:300/hr"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTweetCount"
+                        adapter="@{tweetCountAdapter}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end"
+                        android:selectedItemPosition="@={viewmodel.selectedTweetCount}" />
+
+                    <TextView
+                        android:id="@+id/t5"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/spinnerTweetCount"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="14dp"
+                        android:maxLines="1"
+                        android:text="Max 999*"
+                        android:textAlignment="center"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="14dp">
+
+                    <TextView
+                        android:id="@+id/t3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignBottom="@id/spinnerTimeInterval"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center_vertical"
+                        android:text="Time Interval between tweets: "
+                        android:textColor="?attr/textColorPrimary"
+                        android:textSize="?attr/textSizeNormal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/t3"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="24dp"
+                        android:text="In Seconds"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTimeInterval"
+                        adapter="@{timeIntervalAdapter}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end"
+                        android:selectedItemPosition="@={viewmodel.selectedTimeInterval}" />
+
+                    <TextView
+                        android:id="@+id/t6"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/spinnerTimeInterval"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="14dp"
+                        android:text="Max 60"
+                        android:textAlignment="center"
+                        android:textColor="?attr/textColorSecondary"
+                        android:textSize="?attr/textSizeSmall" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time Required: "
+                        android:textColor="?attr/textColorPrimary"
+                        android:textSize="?attr/textSizeNormal" />
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text='@{String.valueOf(viewmodel.timeRequired)}'
+                        android:textColor="?attr/textColorPrimary"
+                        android:textSize="?attr/textSizeNormal"
+                        tools:text="3h 50m" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btnStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:onClick="@{listener}"
+                    android:text="Start" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/bottomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp"
+            android:text="* Max number of tweets is min of value set by you or max number of combinations(of hashtags and texts)."
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="?attr/textSizeSmall"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
