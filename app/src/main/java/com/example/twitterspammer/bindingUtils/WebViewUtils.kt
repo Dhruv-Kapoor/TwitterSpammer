@@ -14,6 +14,8 @@ object WebViewUtils {
     @BindingAdapter("loadUrl")
     @JvmStatic
     fun loadUrl(webView: WebView, url: String){
-        webView.loadUrl(url)
+        if(url.isNotEmpty()){
+            webView.loadUrl(url)
+        }
     }
 }

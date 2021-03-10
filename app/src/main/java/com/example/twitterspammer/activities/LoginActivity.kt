@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.example.twitterspammer.Commons
 import com.example.twitterspammer.R
@@ -37,6 +38,18 @@ class LoginActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: ")
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.client = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                val uri = Uri.parse(url)
+                if (uri.scheme == "twittersdk") {
+                    handleResponse(uri.query!!)
+                    return true
+                }
+                return false
+            }
+        }
+        binding.url = ""
+
         requestLogin()
     }
 
@@ -50,17 +63,8 @@ class LoginActivity : AppCompatActivity() {
                 val oauthToken = responseBody[1]
                 val oauthTokenSecret = responseBody[2]
 
-                binding.client = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                        val uri = Uri.parse(url)
-                        if (uri.scheme == "twittersdk") {
-                            handleResponse(uri.query!!)
-                            return true
-                        }
-                        return false
-                    }
-                }
                 binding.url = "https://api.twitter.com/oauth/authenticate?oauth_token=$oauthToken"
+                binding.executePendingBindings()
 
             }
 
